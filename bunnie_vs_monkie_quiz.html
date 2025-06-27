@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Bunnie vs Monkie Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f8ff; padding: 20px; }
+    .container { max-width: 700px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+    .question { font-size: 1.2em; margin-bottom: 10px; }
+    .answers button { display: block; margin: 5px 0; padding: 10px; width: 100%; }
+    .feedback { margin-top: 10px; font-weight: bold; }
+    #nextBtn { margin-top: 10px; }
+    #score { font-size: 1.2em; margin-top: 20px; }
+    img.qr { margin-top: 30px; width: 200px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bunnie vs Monkie Quiz</h1>
+    <div id="quiz">
+      <div class="question" id="question">Vraag komt hier...</div>
+      <div class="answers" id="answers"></div>
+      <div class="feedback" id="feedback"></div>
+      <button id="nextBtn" style="display:none;">Volgende vraag</button>
+      <div id="score"></div>
+    </div>
+    <img src="bunnie_vs_monkie_qr.png" alt="QR Code naar de quiz" class="qr">
+  </div>
+
+  <script>
+    const quizData = [
+      { vraag: "Wie is de slimme held in Bunnie vs Monkie?", opties: ["Monkie", "Bunnie", "Pig", "Skunky"], correct: 1 },
+      { vraag: "Wat probeert Monkie meestal te doen?", opties: ["Vrienden maken", "De jungle veroveren", "Boeken lezen", "Bunnie helpen"], correct: 1 },
+      { vraag: "Welke uitvinder helpt Bunnie vaak?", opties: ["Skunky", "Pig", "Monkey", "Metal Steve"], correct: 0 },
+      { vraag: "Wat is een kenmerk van Monkie?", opties: ["Rustig", "Slim", "Grappig en chaotisch", "Verlegen"], correct: 2 },
+      { vraag: "Wie is de robotvriend van Monkie?", opties: ["Metal Steve", "Pig", "Skunky", "Bunnie"], correct: 0 },
+      { vraag: "Wat is het favoriete voertuig van Monkie?", opties: ["Banana Mobile", "Rocket Skateboard", "Flying Car", "Tree Jumper"], correct: 1 },
+      { vraag: "Wat doet Bunnie als Monkie iets slechts doet?", opties: ["Negeert hem", "Maakt een plan", "Rent weg", "Lacht"], correct: 1 },
+      { vraag: "Wie zorgt voor de meeste chaos?", opties: ["Bunnie", "Pig", "Monkie", "Skunky"], correct: 2 },
+      { vraag: "Wat is het doel van Skunky?", opties: ["De jungle beschermen", "Uitvindingen maken", "Monkie helpen", "Boeken schrijven"], correct: 1 },
+      { vraag: "Wat is een thema in de serie?", opties: ["Vriendschap", "Oorlog", "Reizen", "School"], correct: 0 },
+      { vraag: "Wie is vaak de pechvogel?", opties: ["Pig", "Bunnie", "Monkie", "Metal Steve"], correct: 0 },
+      { vraag: "Wat is het genre van Bunnie vs Monkie?", opties: ["Horror", "Avontuur en humor", "Romantiek", "Sciencefiction"], correct: 1 },
+      { vraag: "Wat gebruikt Skunky vaak?", opties: ["Boeken", "Machines", "Magie", "Zwaarden"], correct: 1 },
+      { vraag: "Wat is een les uit de serie?", opties: ["Altijd winnen", "Samenwerken is belangrijk", "Boos zijn helpt", "Vechten is goed"], correct: 1 },
+      { vraag: "Wie is de meest chaotische figuur?", opties: ["Bunnie", "Skunky", "Pig", "Monkie"], correct: 3 }
+    ];
+
+    let huidigeVraag = 0;
+    let score = 0;
+
+    const vraagEl = document.getElementById("question");
+    const antwoordenEl = document.getElementById("answers");
+    const feedbackEl = document.getElementById("feedback");
+    const nextBtn = document.getElementById("nextBtn");
+    const scoreEl = document.getElementById("score");
+
+    function toonVraag() {
+      const vraag = quizData[huidigeVraag];
+      vraagEl.textContent = vraag.vraag;
+      antwoordenEl.innerHTML = "";
+      feedbackEl.textContent = "";
+      nextBtn.style.display = "none";
+
+      vraag.opties.forEach((optie, index) => {
+        const knop = document.createElement("button");
+        knop.textContent = optie;
+        knop.onclick = () => controleerAntwoord(index);
+        antwoordenEl.appendChild(knop);
+      });
+    }
+
+    function controleerAntwoord(gekozenIndex) {
+      const juist = quizData[huidigeVraag].correct === gekozenIndex;
+      feedbackEl.textContent = juist ? "Goed gedaan!" : "Helaas, dat is fout.";
+      if (juist) score++;
+      nextBtn.style.display = "inline-block";
+    }
+
+    nextBtn.onclick = () => {
+      huidigeVraag++;
+      if (huidigeVraag < quizData.length) {
+        toonVraag();
+      } else {
+        vraagEl.textContent = "Je hebt de quiz voltooid!";
+        antwoordenEl.innerHTML = "";
+        feedbackEl.textContent = "";
+        nextBtn.style.display = "none";
+        scoreEl.textContent = `Je score: ${score} van ${quizData.length}`;
+      }
+    };
+
+    toonVraag();
+  </script>
+</body>
+</html>
